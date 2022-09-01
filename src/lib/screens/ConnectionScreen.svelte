@@ -1,9 +1,8 @@
 <script>
-import ConfirmAction from '../components/ConfirmAction.svelte';
-
-import Field from '../components/Field.svelte';
-
-  import {steamId, name, knownServers} from '../settings';
+  import ConfirmAction from '../components/ConfirmAction.svelte';
+  import Field from '../components/Field.svelte';
+  import {steam_id, name, knownServers} from '../settings';
+  import joinRoom from '../room';
 
   export let room;
 
@@ -84,11 +83,20 @@ import Field from '../components/Field.svelte';
       console.log("Validating through check");
       valid = validateServer(connection) && valid;
     }
-
-    valid = validateUser({name: $name, steam_id: $steamId}) && valid;
+    const user = {name: $name, steam_id: $steam_id};
+    valid = validateUser(user) && valid;
 
     if (valid) {
       console.log("VALID!");
+      try {
+        room = await joinRoom(user, connection);
+      } catch (error) {
+        if ("messages" in error) {
+          errors = error.messages;
+        }
+        console.error(error);
+        throw new Error("Failed to connect to server.", {cause: error})
+      }
     } else {
       throw new Error("Failed to validate connection details.")
     }
@@ -137,7 +145,7 @@ import Field from '../components/Field.svelte';
       <Field error={errors.user.name} icon="person" type="text" bind:value={$name} placeholder="Name">
         <p class="flex row start"><strong>Required</strong> This is the name others will see when you connect.</p>
       </Field>
-      <Field error={errors.user.steam_id} icon="badge" type="text" bind:value={$steamId} placeholder="Steam ID">
+      <Field error={errors.user.steam_id} icon="badge" type="text" bind:value={$steam_id} placeholder="Steam ID">
         <div class="flex row start"><strong>Required</strong><p>This is your Steam ID. You can get this from your Steam <em>Account Details</em> page.</p></div>
       </Field>
       <button class="primary" type="submit">Connect</button>

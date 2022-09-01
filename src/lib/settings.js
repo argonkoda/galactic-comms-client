@@ -2,7 +2,7 @@ import { writable } from "svelte/store";
 import persistentSetting from "./persistentSetting";
 
 // Connection
-export const steamId = persistentSetting('steamId', "");
+export const steam_id = persistentSetting('steam_id', "");
 export const name = persistentSetting('name', "");
 export const knownServers = persistentSetting('knownServers', "[]", true);
 

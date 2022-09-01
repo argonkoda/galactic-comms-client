@@ -1,0 +1,1 @@
+export const bufferToHex = (buffer) => [...buffer].map(v => v.toString(16).padStart(2, '0')).join('');
