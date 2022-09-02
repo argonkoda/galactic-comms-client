@@ -30,10 +30,10 @@ class NoiseGateProcessor extends AudioWorkletProcessor {
   process(inputs, outputs, parameters) {
     const output = outputs[0];
     const c = 0;
+    const buffer = this.buffers[c];
     for (let s = 0; s < inputs[0]?.[c]?.length ?? 0; s++) {
       const threshold = parameters.threshold.length > 1 ? parameters.threshold[s] : parameters.threshold[0]
       const avgSample = inputs[0][c][s];
-      const buffer = this.buffers[c];
       const avgVolume = this.volumeSum / buffer.length;
       this.currentSample = (this.currentSample + 1) % buffer.length;
       this.volumeSum -= buffer[this.currentSample];
