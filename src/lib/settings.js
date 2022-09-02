@@ -4,7 +4,7 @@ import persistentSetting from "./persistentSetting";
 // Connection
 export const steam_id = persistentSetting('steam_id', "");
 export const name = persistentSetting('name', "");
-export const knownServers = persistentSetting('knownServers', "[]", true);
+export const knownServers = persistentSetting('knownServers', "{}", true);
 
 // Output
 export const globalVolume = persistentSetting('globalVolume', 1);
