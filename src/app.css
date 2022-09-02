@@ -29,14 +29,17 @@
 
 :root {
   --color-bg-100-light: white;
-  --color-bg-200-light: #eee;
-  --color-bg-300-light: #ddd;
-  --color-bg-400-light: #ccc;
+  --color-bg-150-light: #eee;
+  --color-bg-200-light: #ddd;
+  --color-bg-300-light: #ccc;
+  --color-bg-400-light: #bbb;
   --color-bg-100-dark: #222;
-  --color-bg-200-dark: #333;
-  --color-bg-300-dark: #444;
-  --color-bg-400-dark: #555;
+  --color-bg-150-dark: #333;
+  --color-bg-200-dark: #444;
+  --color-bg-300-dark: #555;
+  --color-bg-400-dark: #666;
   --color-bg-100: var(--color-bg-100-light);
+  --color-bg-150: var(--color-bg-150-light);
   --color-bg-200: var(--color-bg-200-light);
   --color-bg-300: var(--color-bg-300-light);
   --color-bg-400: var(--color-bg-400-light);
@@ -71,6 +74,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --color-bg-100: var(--color-bg-100-dark);
+    --color-bg-150: var(--color-bg-150-dark);
     --color-bg-200: var(--color-bg-200-dark);
     --color-bg-300: var(--color-bg-300-dark);
     --color-bg-400: var(--color-bg-400-dark);
@@ -139,7 +143,7 @@ button.primary {
   background-color: var(--color-primary-200);
 }
 
-input {
+input:is([type=text],[type=search],input[type=number]) {
   border: none;
   padding: 0.5rem;
   border-radius: var(--border-radius);
@@ -176,6 +180,36 @@ input[data-icon]::before {
   content: attr(data-icon);
   color: var(--color-bg-300);
   z-index: 2;
+}
+
+input[type=range] {
+  appearance: none;
+  all: unset;
+  display: block;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 0.5rem;
+  background: var(--color-bg-300);
+  transform: translate(0, -25%);
+  z-index: 1;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+  background: var(--color-bg-400);
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  appearance: none;
+  display: block;
+  margin: 0.5rem 0;
+  height: 0.5rem;
+  width: calc(100% * (attr(value) - attr(min)) / (attr(max) - attr(max)));
+  border-radius: var(--border-radius);
+  background: var(--color-bg-200);
 }
 
 .flex {

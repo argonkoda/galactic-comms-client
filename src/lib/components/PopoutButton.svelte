@@ -31,7 +31,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    background: var(--color-bg-300);
+    background: var(--color-bg-150);
     border-radius: var(--border-radius);
     gap: var(--popout-gap, 0);
   }

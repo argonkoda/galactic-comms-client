@@ -230,7 +230,7 @@
 
   .connection-screen {
     position: relative;
-    background-color: var(--color-bg-200);
+    background-color: var(--color-bg-150);
     display: grid;
     grid-template-columns: 15rem 30rem;
     grid-template-rows: auto 17rem auto;

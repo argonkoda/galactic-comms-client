@@ -166,53 +166,43 @@ import FFTGraph from '../components/FFTGraph.svelte';
   }
 
   .slider {
-    height: calc(2*var(--border-radius));
     position: relative;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    border: 1px solid var(--color-bg-200);
-    border-radius: var(--border-radius);
+    width: 100%;
+  }
+
+  .slider input[type=range] {
+    width: 100%;
   }
 
   .splits {
     position: absolute;
-    top: 0;
+    top: 0.5rem;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 0.5rem;
     border-radius: var(--border-radius);
     display: flex;
     flex-direction: row;
     align-items: stretch;
     overflow: hidden;
+    pointer-events: none;
   }
 
   .split.low {
-    background-color: goldenrod;
+    background-color: rgb(180, 151, 76);
   }
 
   .split.high {
-    background-color: limegreen;
+    background-color: rgb(101, 194, 101);
   }
 
   .slider .indicator {
-    height: 100%;
-    top: 0;
+    height: 0.5rem;
+    top: 0.5rem;
     left: 0;
     position: absolute;
     background: rgba(0,0,0,0.3);
-    border-radius: var(--border-radius);
-  }
-
-  .slider input {
-    appearance: none;
-    background: none;
-    width: 100%;
-    position: absolute;
-    top: -5px;
-    left: 0;
-    padding: 0;
-    margin: 0;
+    /* border-radius: var(--border-radius); */
   }
 
   input[type=checkbox] {
