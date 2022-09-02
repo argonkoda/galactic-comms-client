@@ -17,7 +17,7 @@ import FFTGraph from "./FFTGraph.svelte";
 </script>
 
 <div class="participant">
-  <span class="cutoff-text">{$name}</span>
+  <span class="cutoff-text">{name}</span>
   <div class="volume-controls">
     <input type="range" min=0 max=5 step=0.01 bind:value={$volume} disabled={$muted}>
     <button class="borderless" on:click={() => muted.update(muted => !muted)}><span class="material-symbols-outlined">{$muted ? "volume_off" : "volume_up"}</span></button>
