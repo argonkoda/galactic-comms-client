@@ -1,4 +1,6 @@
 <script>
+import CommsScreen from "./lib/screens/CommsScreen.svelte";
+
 import ConnectionScreen from "./lib/screens/ConnectionScreen.svelte";
 
 
@@ -6,7 +8,7 @@ import ConnectionScreen from "./lib/screens/ConnectionScreen.svelte";
 </script>
 
 {#if room !== null}
-  <h1>ROOM</h1>
+  <CommsScreen bind:room />
 {:else}
   <ConnectionScreen bind:room />
 {/if}
