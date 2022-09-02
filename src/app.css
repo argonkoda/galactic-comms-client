@@ -117,7 +117,7 @@ button {
   font-size: 1rem;
   border-radius: var(--border-radius);
   outline: none;
-  background: var(--color-bg-400);
+  background: var(--color-bg-300);
   color: inherit;
   display: inline-flex;
   flex-direction: row;
@@ -185,6 +185,7 @@ input[data-icon]::before {
 
 .row {
   flex-direction: row;
+  align-items: center;
 }
 
 .start {
@@ -193,4 +194,11 @@ input[data-icon]::before {
 
 .end {
   justify-content: flex-end;
+}
+
+.cutoff-text {
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 100%;
+  text-overflow: ellipsis;
 }

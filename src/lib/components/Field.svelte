@@ -87,7 +87,7 @@
     right: 0;
     display: none;
     z-index: 1;
-    background: var(--color-bg-300);
+    background: var(--color-bg-400);
     border-top: 1px solid var(--color-bg-400);
     padding: 0.5rem;
     border-bottom-left-radius: var(--border-radius);
