@@ -1,7 +1,7 @@
 <script>
   import { update_await_block_branch } from "svelte/internal";
 import Participant from "../components/Participant.svelte";
-  import {muted, deafened, name, muteIndicatorPosition, muteIndicatorEnabled} from '../settings';
+  import {muted, deafened, name, muteIndicatorPosition, muteIndicatorEnabled, ptt} from '../settings';
 import Settings from "./Settings.svelte";
 
   export let room;
@@ -21,7 +21,7 @@ import Settings from "./Settings.svelte";
     </ul>
     <div class="local-controls">
       <span class="cutoff-text">{$name}</span>
-      <button class="borderless" on:click={() => muted.update((muted) => !muted)}><span class="material-symbols-outlined">{$muted ? "mic_off" : "mic"}</span></button>
+      <button class="borderless" class:active={$ptt && !$muted} on:click={() => muted.update((muted) => !muted)}><span class="material-symbols-outlined">{$muted ? "mic_off" : "mic"}</span></button>
       <button class="borderless" on:click={() => deafened.update((deafened) => !deafened)}><span class="material-symbols-outlined">{$deafened ? "headset_off" : "headphones"}</span></button>
       <button class="borderless settings-toggle" on:click={() => showSettings = true}><span class="material-symbols-outlined">settings</span></button>
     </div>
@@ -159,6 +159,10 @@ import Settings from "./Settings.svelte";
   }
   .mute-indicator:global(.right) {
     justify-content: flex-end;
+  }
+
+  .active {
+    color: var(--color-primary-200);
   }
 
 
