@@ -20,7 +20,7 @@ import PopoutButton from "./PopoutButton.svelte";
 </script>
 <div class="participant">
   <span class="material-symbols-outlined">
-    signal_cellular_{Math.max((quality * 5) | 0, 4)}_bar
+    signal_cellular_{Math.min(Math.ceil($quality * 4), 4)}_bar
   </span>
   <span class="cutoff-text">{name}</span>
   <FFTGraph fft={$fft} />
