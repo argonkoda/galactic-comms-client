@@ -9,7 +9,7 @@ import NoiseGateNode from "./audio/NoiseGateNode";
 
 const salt = "THE SaltIeST oF SaLtIes";
 
-const FFT_SIZE = 128;
+const FFT_SIZE = 64;
 
 export default async function room(user, connection) {
 
@@ -61,7 +61,7 @@ export default async function room(user, connection) {
 
     const noiseGate = new NoiseGateNode(audioCtx);
     noiseGate.connect(outgoingMediaStreamNode);
-    const localFFT = new AnalyserNode(audioCtx, {fftSize: FFT_SIZE});
+    const localFFT = new AnalyserNode(audioCtx, {fftSize: FFT_SIZE * 2});
     localFFT.connect(noiseGate);
     const localMixer = new GainNode(audioCtx);
     localMixer.connect(localFFT);
@@ -169,7 +169,7 @@ export default async function room(user, connection) {
 
 
     room.on('client-join', client => {
-      const analyserNode = new AnalyserNode(audioCtx, {fftSize: FFT_SIZE});
+      const analyserNode = new AnalyserNode(audioCtx, {fftSize: FFT_SIZE * 2});
       analyserNode.connect(outputMixer);
       
       const qualityEffectFilterNode = new QualityEffectFilterNode(audioCtx);
