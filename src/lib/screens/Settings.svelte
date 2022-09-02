@@ -2,14 +2,15 @@
   import Select from '../components/Select.svelte';
   import Option from '../components/Option.svelte';
   import {globalVolume, microphoneGain, microphoneDevice, microphoneSensitivity, listening, muteHotkey, deafenHotkey, pttHotkey, pttEnabled, muteIndicatorEnabled, muteIndicatorPosition} from '../settings';
-import { listen } from 'svelte/internal';
 import HotkeyBinding from '../components/HotkeyBinding.svelte';
+import FFTGraph from '../components/FFTGraph.svelte';
 
   let microphones = [];
   let speakers = [];
 
   export let room = null;
   $: localSpeaking = room?.localSpeaking ?? null;
+  $: localFFT = room?.localFFT ?? null;
 
   function refreshDevices() {
     navigator.mediaDevices.enumerateDevices().then((devices) => {
@@ -59,6 +60,7 @@ import HotkeyBinding from '../components/HotkeyBinding.svelte';
         {/if}
         <input type="range"  min="0" max="1" step="0.01" bind:value={$microphoneSensitivity}>
       </div>
+      <FFTGraph fft={$localFFT} />
     </div>
     <div class="settings-group">
       <label for="">Test Microphone</label>
