@@ -41,8 +41,6 @@ class NoiseGateProcessor extends AudioWorkletProcessor {
       this.attack = Math.min(parameters.attackTime[0], Math.max(0, this.attack + (avgVolume > threshold ? +1 : -1)))
       output[c][s] = avgSample * this.attack / parameters.attackTime[0];
     }
-    // @ts-ignore
-    this.port.postMessage({volume: this.volumeSum / buffer.length});
     return true;
   }
 }

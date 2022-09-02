@@ -61,13 +61,19 @@ export default async function room(user, connection) {
 
     const noiseGate = new NoiseGateNode(audioCtx);
     noiseGate.connect(outgoingMediaStreamNode);
+    const localFFT = new AnalyserNode(audioCtx, {fftSize: FFT_SIZE});
+    localFFT.connect(noiseGate);
     const localMixer = new GainNode(audioCtx);
-    localMixer.connect(noiseGate);
+    localMixer.connect(localFFT);
+
+    const localFFTStore = writable(new Uint8Array(FFT_SIZE));
     
     function updateFFT() {
       for (const participant of participants) {
         participant.fft.update(array => (participant.analyserNode.getByteFrequencyData(array), array));
       }
+
+      localFFTStore.update(array => (localFFT.getByteFrequencyData(array), array));
       
       animationFrame = requestAnimationFrame(updateFFT);
     }
@@ -235,7 +241,8 @@ export default async function room(user, connection) {
   
     return {
       participants: derived([participantsStore], ([participants]) => [...participants.values()]),
-      localSpeaking: noiseGate.volume
+      localSpeaking: derived([localFFTStore], ([localFFT]) => localFFT.reduce((sum, f) => sum + f, 0) / (255 * FFT_SIZE)),
+      localFFT: localFFTStore,
     };
     
   } catch (error) {

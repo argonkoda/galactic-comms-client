@@ -12,22 +12,6 @@ export default class NoiseGateNode extends AudioWorkletNode {
       numberOfOutputs: 1,
       outputChannelCount: [1]
     })
-
-    this.volume = readable(0, (set) => {
-      /**
-       * 
-       * @param {MessageEvent} e 
-       */
-      const handler = (e) => {
-        set(e.data.volume ?? 0)
-      }
-
-      this.port.addEventListener('message', handler);
-      return () => {
-        this.port.removeEventListener('message', handler)
-      }
-    })
-    this.port.start();
   }
 
   static async loadWorklets(audioCtx) {
