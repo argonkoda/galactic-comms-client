@@ -1,12 +1,20 @@
 <script>
   export let popout = false;
   export let side = "right";
+
+  let popoutElem;
+
+  function handleBlur(e) {
+    if (popoutElem && !popoutElem.contains(e.target)) popout = false;
+  }
 </script>
+
+<svelte:window on:click={handleBlur}></svelte:window>
 
 <div class="popout-container">
   <slot name="activator" open={() => popout = true} />
   {#if popout}
-  <div class="popout {side}">
+  <div class="popout {side}" bind:this={popoutElem}>
     <slot />
   </div>
   {/if}
@@ -25,6 +33,7 @@
     align-items: center;
     background: var(--color-bg-300);
     border-radius: var(--border-radius);
+    gap: var(--popout-gap, 0);
   }
 
   .popout.right {

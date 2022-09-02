@@ -1,5 +1,6 @@
 <script>
 import FFTGraph from "./FFTGraph.svelte";
+import PopoutButton from "./PopoutButton.svelte";
 
   export let participant;
   let {
@@ -12,33 +13,32 @@ import FFTGraph from "./FFTGraph.svelte";
     speaking
   } = participant;
 
+  let popout = false;
+
   
 
 </script>
-
 <div class="participant">
   <span class="cutoff-text">{name}</span>
-  <div class="volume-controls">
+  <FFTGraph fft={$fft} />
+  <PopoutButton bind:popout>
+    <button class="borderless" slot="activator" let:open on:click|stopPropagation={open}><span class="material-symbols-outlined">more_vert</span></button>
     <input type="range" min=0 max=5 step=0.01 bind:value={$volume} disabled={$muted}>
     <button class="borderless" on:click={() => muted.update(muted => !muted)}><span class="material-symbols-outlined">{$muted ? "volume_off" : "volume_up"}</span></button>
-  </div>
-  <FFTGraph fft={$fft} />
-  <!-- <span>{$quality}</span> -->
+  </PopoutButton>
 </div>
 
 <style>
   .participant {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: 1fr 1fr auto;
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem;
   }
 
-  .volume-controls {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.5rem;
+  input {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
   }
 </style>
