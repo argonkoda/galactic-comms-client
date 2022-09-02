@@ -13,13 +13,13 @@ export default class NoiseGateNode extends AudioWorkletNode {
       outputChannelCount: [1]
     })
 
-    this.attack = readable(0, (set) => {
+    this.volume = readable(0, (set) => {
       /**
        * 
        * @param {MessageEvent} e 
        */
       const handler = (e) => {
-        set(e.data.attack ?? 0)
+        set(e.data.volume ?? 0)
       }
 
       this.port.addEventListener('message', handler);

@@ -42,7 +42,7 @@ class NoiseGateProcessor extends AudioWorkletProcessor {
       output[c][s] = avgSample * this.attack / parameters.attackTime[0];
     }
     // @ts-ignore
-    this.port.postMessage({attack: this.attack});
+    this.port.postMessage({volume: this.volumeSum / buffer.length});
     return true;
   }
 }
