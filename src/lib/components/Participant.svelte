@@ -19,6 +19,9 @@ import PopoutButton from "./PopoutButton.svelte";
 
 </script>
 <div class="participant">
+  <span class="material-symbols-outlined">
+    signal_cellular_{Math.max((quality * 5) | 0, 4)}_bar
+  </span>
   <span class="cutoff-text">{name}</span>
   <FFTGraph fft={$fft} />
   <PopoutButton bind:popout>
@@ -31,7 +34,7 @@ import PopoutButton from "./PopoutButton.svelte";
 <style>
   .participant {
     display: grid;
-    grid-template-columns: 1fr 1fr auto;
+    grid-template-columns: auto 1fr 1fr auto;
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem;
