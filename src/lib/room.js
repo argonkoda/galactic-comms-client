@@ -9,7 +9,7 @@ import NoiseGateNode from "./audio/NoiseGateNode";
 
 const salt = "THE SaltIeST oF SaLtIes";
 
-const FFT_SIZE = 32;
+const FFT_SIZE = 128;
 
 export default async function room(user, connection) {
 
@@ -158,7 +158,7 @@ export default async function room(user, connection) {
     const qualityMap = writable(new Map());
 
     socket.on('quality-update', (from, quality) => {
-      qualityMap.update(map => map.set(from, quality));
+      qualityMap.update(map => (map.set(from, quality), map));
     })
 
 
@@ -172,8 +172,9 @@ export default async function room(user, connection) {
       const clientMixer = new GainNode(audioCtx);
       clientMixer.connect(qualityEffectFilterNode);
 
-      const clientStreamSource = new MediaStreamAudioSourceNode(audioCtx, {mediaStream: new MediaStream()});
-      clientStreamSource.connect(clientMixer);
+      const tracks = new Set();
+
+      let clientStreamSource = null;
       const fft = writable(new Uint8Array(FFT_SIZE));
       const participant = {
         steam_id: client.clientData.steam_id,
@@ -186,6 +187,21 @@ export default async function room(user, connection) {
         analyserNode
       }
 
+      const participantVolume = derived([participant.volume, participant.muted], ([volume, muted]) => muted ? 0 : volume);
+
+      const clientSubscriptions = [
+        participant.quality.subscribe(quality => qualityEffectFilterNode.parameters.get('quality').value = quality),
+        participantVolume.subscribe(volume => clientMixer.gain.value = volume),
+      ]
+
+      function recreateClientStreamSource() {
+        if (clientStreamSource) {
+          clientStreamSource.disconnect();
+        }
+        clientStreamSource = new MediaStreamAudioSourceNode(audioCtx, {mediaStream: new MediaStream([...tracks])});
+        clientStreamSource.connect(clientMixer);
+      }
+
       client.on('track-added', event => {
         if (event.track.kind === 'audio') {
 
@@ -194,11 +210,13 @@ export default async function room(user, connection) {
           debugAudioElem.srcObject = new MediaStream();
           debugAudioElem.srcObject.addTrack(event.track);
 
-          clientStreamSource.mediaStream.addTrack(event.track);
+          tracks.add(event.track);
+          recreateClientStreamSource();
 
 
           event.streams[0].addEventListener('removetrack', () => {
-            clientStreamSource.mediaStream.removeTrack(event.track);
+            tracks.delete(event.track);
+            recreateClientStreamSource();
           })
         }
       })
@@ -207,6 +225,7 @@ export default async function room(user, connection) {
         analyserNode.disconnect();
         participants.delete(participant);
         participantsStore.set(participants);
+        clientSubscriptions.forEach(fn => fn());
       })
 
       participants.add(participant);
@@ -215,8 +234,8 @@ export default async function room(user, connection) {
 
   
     return {
-      participants: derived([participantsStore], ([participants]) => participants),
-      localSpeaking: derived([noiseGate.attack], ([attack]) => (attack/noiseGate.parameters.get('attackTime').value > 0.5))
+      participants: derived([participantsStore], ([participants]) => [...participants.values()]),
+      localSpeaking: noiseGate.volume
     };
     
   } catch (error) {
