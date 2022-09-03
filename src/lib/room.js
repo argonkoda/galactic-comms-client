@@ -54,8 +54,6 @@ export default async function room(user, connection) {
       }
     }
 
-    const room = await Room.join(io, url.href, 'main', user, [outgoingMediaStreamNode.stream], transformMessage);
-
     const outputMixer = new GainNode(audioCtx);
     outputMixer.connect(destination);
 
@@ -140,6 +138,8 @@ export default async function room(user, connection) {
     
       })
     ]
+
+    const room = await Room.join(io, url.href, 'main', user, [outgoingMediaStreamNode.stream], transformMessage);
 
     function close(reason) {
       room.disconnect();
