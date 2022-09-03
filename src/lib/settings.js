@@ -21,6 +21,7 @@ export const pttEnabled = persistentSetting('pttEnabled', true, true);
 // Visuals
 export const muteIndicatorEnabled = persistentSetting('muteIndicatorEnabled', false, true);
 export const muteIndicatorPosition = persistentSetting('muteIndicatorPosition', 'middle center');
+export const theme = persistentSetting('theme', '');
 
 // Incoming Connections
 export const cachedVolumes = persistentSetting('cachedVolumes', "{}", true);

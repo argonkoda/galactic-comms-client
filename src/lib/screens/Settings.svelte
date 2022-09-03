@@ -1,7 +1,7 @@
 <script>
   import Select from '../components/Select.svelte';
   import Option from '../components/Option.svelte';
-  import {globalVolume, microphoneGain, microphoneDevice, microphoneSensitivity, listening, muteHotkey, deafenHotkey, pttHotkey, pttEnabled, muteIndicatorEnabled, muteIndicatorPosition} from '../settings';
+  import {globalVolume, microphoneGain, microphoneDevice, microphoneSensitivity, listening, muteHotkey, deafenHotkey, pttHotkey, pttEnabled, muteIndicatorEnabled, muteIndicatorPosition, theme} from '../settings';
 import HotkeyBinding from '../components/HotkeyBinding.svelte';
 import FFTGraph from '../components/FFTGraph.svelte';
 
@@ -87,6 +87,12 @@ import FFTGraph from '../components/FFTGraph.svelte';
         <Option value="{vert} {horiz}">{vert.slice(0,1).toUpperCase() + vert.slice(1)} {horiz.slice(0,1).toUpperCase() + horiz.slice(1)}</Option>
         {/each}
         {/each}
+      </Select>
+      <label for="">Appearance</label>
+      <Select bind:value={$theme}>
+        <Option value="">System Default</Option>
+        <Option value="light">Light</Option>
+        <Option value="dark">Dark</Option>
       </Select>
     </div>
   </div>

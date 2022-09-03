@@ -1,8 +1,11 @@
 <script>
-import CommsScreen from "./lib/screens/CommsScreen.svelte";
+  import CommsScreen from "./lib/screens/CommsScreen.svelte";
 
-import ConnectionScreen from "./lib/screens/ConnectionScreen.svelte";
+  import ConnectionScreen from "./lib/screens/ConnectionScreen.svelte";
 
+  import {theme} from "./lib/settings";
+
+  $: document.documentElement.classList.value = $theme;
 
   let room = null;
 </script>
@@ -12,7 +15,3 @@ import ConnectionScreen from "./lib/screens/ConnectionScreen.svelte";
 {:else}
   <ConnectionScreen bind:room />
 {/if}
-
-<style>
-  
-</style>

@@ -71,6 +71,38 @@
   --border-radius: 0.25rem;
 }
 
+html.dark {
+  --color-bg-100: var(--color-bg-100-dark);
+  --color-bg-150: var(--color-bg-150-dark);
+  --color-bg-200: var(--color-bg-200-dark);
+  --color-bg-300: var(--color-bg-300-dark);
+  --color-bg-400: var(--color-bg-400-dark);
+
+  --color-text-default: var(--color-text-default-dark);
+  --color-text-disabled: var(--color-text-disabled-dark);
+  --color-text-error: var(--color-text-error-dark);
+
+  --color-primary-100: var(--color-primary-100-dark);
+  --color-primary-200: var(--color-primary-200-dark);
+  --color-primary-300: var(--color-primary-300-dark);
+}
+
+html.light {
+  --color-bg-100: var(--color-bg-100-light);
+  --color-bg-150: var(--color-bg-150-light);
+  --color-bg-200: var(--color-bg-200-light);
+  --color-bg-300: var(--color-bg-300-light);
+  --color-bg-400: var(--color-bg-400-light);
+
+  --color-text-default: var(--color-text-default-light);
+  --color-text-disabled: var(--color-text-disabled-light);
+  --color-text-error: var(--color-text-error-light);
+
+  --color-primary-100: var(--color-primary-100-light);
+  --color-primary-200: var(--color-primary-200-light);
+  --color-primary-300: var(--color-primary-300-light);
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --color-bg-100: var(--color-bg-100-dark);
