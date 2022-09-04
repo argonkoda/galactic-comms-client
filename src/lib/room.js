@@ -141,6 +141,10 @@ export default async function room(user, connection) {
 
     const room = await Room.join(io, url.href, 'main', user, [outgoingMediaStreamNode.stream], transformMessage);
 
+    let resolveRoomClose;
+
+    const roomClosed = new Promise((resolve, reject) => resolveRoomClose = resolve);
+
     function close(reason) {
       room.disconnect();
       socket.close();
@@ -148,6 +152,7 @@ export default async function room(user, connection) {
       outputMixer.disconnect();
       cancelAnimationFrame(animationFrame);
       subscriptions.forEach(fn => fn());
+      resolveRoomClose(reason);
     }
 
     socket.on('disconnect', (reason) => {
@@ -243,6 +248,8 @@ export default async function room(user, connection) {
       participants: derived([participantsStore], ([participants]) => [...participants.values()]),
       localSpeaking: derived([localFFTStore], ([localFFT]) => localFFT.reduce((sum, f) => sum + f, 0) / (255 * FFT_SIZE)),
       localFFT: localFFTStore,
+      close() {close(null)},
+      closed: roomClosed,
     };
     
   } catch (error) {

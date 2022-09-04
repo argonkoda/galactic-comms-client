@@ -8,7 +8,7 @@ import Settings from "./Settings.svelte";
 
   let showSettings = false;
 
-  let {participants, localSpeaking} = room;
+  let {participants, localSpeaking, close} = room;
 </script>
 
 <main>
@@ -21,6 +21,7 @@ import Settings from "./Settings.svelte";
     </ul>
     <div class="local-controls">
       <span class="cutoff-text">{$name}</span>
+      <button class="borderless" on:click={close}><span class="material-symbols-outlined">logout</span></button>
       <button class="borderless" class:active={$ptt && !$muted} on:click={() => muted.update((muted) => !muted)}><span class="material-symbols-outlined">{$muted ? "mic_off" : "mic"}</span></button>
       <button class="borderless" on:click={() => deafened.update((deafened) => !deafened)}><span class="material-symbols-outlined">{$deafened ? "headset_off" : "headphones"}</span></button>
       <button class="borderless settings-toggle" on:click={() => showSettings = true}><span class="material-symbols-outlined">settings</span></button>

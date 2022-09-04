@@ -8,10 +8,19 @@
   $: document.documentElement.classList.value = $theme;
 
   let room = null;
+  let error = null;
+
+  function showReason(reason) {
+    error = reason
+    room = null;
+  }
+
+  $: closed = room?.closed ?? null;
+  $: if (closed) closed.then(showReason);
 </script>
 
 {#if room !== null}
   <CommsScreen bind:room />
 {:else}
-  <ConnectionScreen bind:room />
+  <ConnectionScreen bind:room bind:error />
 {/if}

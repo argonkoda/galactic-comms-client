@@ -6,6 +6,8 @@
 
   export let room;
 
+  export let error;
+
   let errors = {connection: {}, user: {}};
 
   let connection, selectedServer;
@@ -95,16 +97,17 @@
           errors = error.messages;
         }
         console.error(error);
-        throw new Error("Failed to connect to server.", {cause: error})
+        throw new Error("Failed to connect to server. Verify that the connection details are correct and that the server is running.", {cause: error})
       }
     } else {
-      throw new Error("Failed to validate connection details.")
+      throw new Error("Connection details invalid. Please check the details you have entered.")
     }
   }
 
   function handleSubmit() {
+    error = null;
     connecting = true;
-    connect().finally(() => connecting = false);
+    connect().catch(err => error = err).finally(() => connecting = false);
   }
 
   selectServer(null);
@@ -113,47 +116,54 @@
 </script>
 
 <main>
-  <form class="connection-screen" class:hidden={connecting} on:submit|preventDefault={handleSubmit}>
-    <p class="section-title">Servers</p><p class="section-title">Connection</p>
-    <ul class="known-servers">
-      {#each Object.entries($knownServers) as [id, {name}] (id)}
-        <li class="known-server" class:selected={selectedServer===id} on:click={() => selectServer(id)}>
-          <span class="known-server-name">{name}</span>
-          <ConfirmAction type="button" class="borderless" on:confirm={() => deleteServer(id)}><span class="material-symbols-outlined known-server-delete">delete</span></ConfirmAction>
-        </li>
-      {/each}
-    </ul>
-    <div class="connection-form">
-      <Field error={errors.connection.server_name} icon="bookmark" type="text" bind:value={connection.name} placeholder="Server Name">
-        <p class="flex row start"><strong>Optional</strong> If you specify this we'll save the server details under this name for later use.</p>
-      </Field>
-      <Field error={errors.connection.hostname} icon="dns" type="text" bind:value={connection.hostname} placeholder="Hostname">
-        <p class="flex row start"><strong>Required</strong> The IP of the server to connect to. Port is specified later.</p>
-      </Field>
-      <Field error={errors.connection.port} icon="electrical_services" type="text" bind:value={connection.port} placeholder="Port">
-        <p class="flex row start"><strong>Required</strong> The port of the server to connect to. A 4-6 digit number</p>
-      </Field>
-      <Field error={errors.connection.password} icon="lock" type="password" bind:value={connection.password} placeholder="Password">
-        <p class="flex row start"><strong>Required</strong> The password for the server.</p>
-      </Field>
-      <div class="flex row end">
-        {#if selectedServer !== null}<button type="button" on:click={saveServer}>Save</button>{/if}
-        <button type="button" on:click={() => {selectedServer = null; saveServer();}}>Add</button>
+  <div class="connection-screen-container">
+    <form class="connection-screen" class:hidden={connecting} on:submit|preventDefault={handleSubmit}>
+      <p class="section-title">Servers</p><p class="section-title">Connection</p>
+      <ul class="known-servers">
+        {#each Object.entries($knownServers) as [id, {name}] (id)}
+          <li class="known-server" class:selected={selectedServer===id} on:click={() => selectServer(id)}>
+            <span class="known-server-name">{name}</span>
+            <ConfirmAction type="button" class="borderless" on:confirm={() => deleteServer(id)}><span class="material-symbols-outlined known-server-delete">delete</span></ConfirmAction>
+          </li>
+        {/each}
+      </ul>
+      <div class="connection-form">
+        <Field error={errors.connection.server_name} icon="bookmark" type="text" bind:value={connection.name} placeholder="Server Name">
+          <p class="flex row start"><strong>Optional</strong> If you specify this we'll save the server details under this name for later use.</p>
+        </Field>
+        <Field error={errors.connection.hostname} icon="dns" type="text" bind:value={connection.hostname} placeholder="Hostname">
+          <p class="flex row start"><strong>Required</strong> The IP of the server to connect to. Port is specified later.</p>
+        </Field>
+        <Field error={errors.connection.port} icon="electrical_services" type="text" bind:value={connection.port} placeholder="Port">
+          <p class="flex row start"><strong>Required</strong> The port of the server to connect to. A 4-6 digit number</p>
+        </Field>
+        <Field error={errors.connection.password} icon="lock" type="password" bind:value={connection.password} placeholder="Password">
+          <p class="flex row start"><strong>Required</strong> The password for the server.</p>
+        </Field>
+        <div class="flex row end">
+          {#if selectedServer !== null}<button type="button" on:click={saveServer}>Save</button>{/if}
+          <button type="button" on:click={() => {selectedServer = null; saveServer();}}>Add</button>
+        </div>
       </div>
+      <div class="user-row">
+        <Field error={errors.user.name} icon="person" type="text" bind:value={$name} placeholder="Name">
+          <p class="flex row start"><strong>Required</strong> This is the name others will see when you connect.</p>
+        </Field>
+        <Field error={errors.user.steam_id} icon="badge" type="text" bind:value={$steam_id} placeholder="Steam ID">
+          <div class="flex row start"><strong>Required</strong><p>This is your Steam ID. You can get this from your Steam <em>Account Details</em> page.</p></div>
+        </Field>
+        <button class="primary" type="submit">Connect</button>
+      </div>
+      {#if connecting}
+      <div class="spinner"></div>
+      {/if}
+    </form>
+    {#if error}
+    <div class="error-panel">
+      {error}
     </div>
-    <div class="user-row">
-      <Field error={errors.user.name} icon="person" type="text" bind:value={$name} placeholder="Name">
-        <p class="flex row start"><strong>Required</strong> This is the name others will see when you connect.</p>
-      </Field>
-      <Field error={errors.user.steam_id} icon="badge" type="text" bind:value={$steam_id} placeholder="Steam ID">
-        <div class="flex row start"><strong>Required</strong><p>This is your Steam ID. You can get this from your Steam <em>Account Details</em> page.</p></div>
-      </Field>
-      <button class="primary" type="submit">Connect</button>
-    </div>
-    {#if connecting}
-    <div class="spinner"></div>
     {/if}
-  </form>
+  </div>
 </main>
 
 <style>
@@ -228,12 +238,17 @@
     border-bottom: 1px solid var(--color-bg-300);
   }
 
+  .connection-screen-container {
+    position: relative;
+  }
+
   .connection-screen {
     position: relative;
     background-color: var(--color-bg-150);
     display: grid;
     grid-template-columns: 15rem 30rem;
     grid-template-rows: auto 17rem auto;
+    z-index: 1;
     border-radius: 1rem;
   }
 
@@ -271,6 +286,29 @@
     border-right: transparent; */
     border-radius: 100vh;
     animation: spin 1s infinite linear;
+  }
+
+  @keyframes slide-down {
+    from {
+      top: 0;
+    }
+    to {
+      top: calc(100% - 1rem);
+    }
+  }
+
+  .error-panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background-color: var(--color-text-error);
+    color: white;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    padding: 1rem;
+    padding-top: 2rem;
+    animation: slide-down 0.3s forwards;
   }
 </style>
 
