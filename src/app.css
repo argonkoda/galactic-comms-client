@@ -28,6 +28,8 @@
 }
 
 :root {
+  --font-default: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
   --color-bg-100-light: white;
   --color-bg-150-light: #eee;
   --color-bg-200-light: #ddd;
@@ -142,7 +144,7 @@ html,body {
   height: 100%;
   overflow: hidden;
   background-color: var(--color-bg-100);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: var(--font-default);
   color: var(--color-text-default);
   font-size: 1rem;
 }
@@ -284,4 +286,6 @@ input[type=range]::-webkit-slider-runnable-track {
   padding: 0.5rem;
   background: var(--color-bg-400);
   white-space: nowrap;
+  font-family: var(--font-default);
+  font-size: 1rem;
 }
