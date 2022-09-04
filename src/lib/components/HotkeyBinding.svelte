@@ -65,7 +65,7 @@
     {binding || "Not Set"}
   {/if}
 </kbd>
-<button class="borderless" on:click={() => {
+<button aria-label="Clear" class="borderless" on:click={() => {
   recordingHotkey = false;
   binding = "";
 }}><span class="material-symbols-outlined">backspace</span></button>

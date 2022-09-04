@@ -144,15 +144,17 @@ export default async function room(user, connection) {
     let resolveRoomClose;
 
     const roomClosed = new Promise((resolve, reject) => resolveRoomClose = resolve);
-
+    let closed = false;
     function close(reason) {
+      if (closed) return;
+      closed = true;
+      resolveRoomClose(reason);
       room.disconnect();
       socket.close();
       destination.disconnect();
       outputMixer.disconnect();
       cancelAnimationFrame(animationFrame);
-      subscriptions.forEach(fn => fn());
-      resolveRoomClose(reason);
+      subscriptions.forEach((fn, i) => (console.log(i, fn), fn()));
     }
 
     socket.on('disconnect', (reason) => {

@@ -268,3 +268,20 @@ input[type=range]::-webkit-slider-runnable-track {
   max-width: 100%;
   text-overflow: ellipsis;
 }
+
+*:where([aria-label]) {
+  position: relative;
+}
+
+*:where([aria-label]):hover::after {
+  content: attr(aria-label);
+  display: block;
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  border-radius: var(--border-radius);
+  left: 50%;
+  transform: translate(-50%, 0);
+  padding: 0.5rem;
+  background: var(--color-bg-400);
+  white-space: nowrap;
+}

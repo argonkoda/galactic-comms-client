@@ -44,7 +44,7 @@ import FFTGraph from '../components/FFTGraph.svelte';
             <Option value={microphone.deviceId}>{microphone.label || "Unknown Device"}</Option>
           {/each}
         </Select>
-        <button class="borderless" on:click={refreshDevices}><span class="material-symbols-outlined">refresh</span></button>
+        <button aria-label="Refresh Device List" class="borderless" on:click={refreshDevices}><span class="material-symbols-outlined">refresh</span></button>
       </div>
     </div>
     <div class="settings-group">
