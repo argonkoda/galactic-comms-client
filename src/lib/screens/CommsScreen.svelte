@@ -77,7 +77,7 @@ import Settings from "./Settings.svelte";
   .local-controls {
     border-top: 1px solid var(--color-bg-300);
     display: grid;
-    grid-template-columns: 1fr auto auto auto;
+    grid-template-columns: 1fr auto auto auto auto;
     align-items: center;
     gap: 0.5rem;
     padding: 1rem;
