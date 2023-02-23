@@ -1,5 +1,6 @@
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
+import json from "@rollup/plugin-json";
 
 function renderer() {
   return {
@@ -27,6 +28,7 @@ export default {
     renderer(),
     resolve({}),
     commonjs(),
+    json(),
   ],
   input: {'background': 'src/background.js', 'preload': 'src/preload.js'},
   output: {
