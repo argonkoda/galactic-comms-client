@@ -1,9 +1,10 @@
 <script>
   import Select from '../components/Select.svelte';
   import Option from '../components/Option.svelte';
-  import {globalVolume, microphoneGain, microphoneDevice, microphoneSensitivity, listening, muteHotkey, deafenHotkey, pttHotkey, pttEnabled, muteIndicatorEnabled, muteIndicatorPosition, theme} from '../settings';
+  import {globalVolume, microphoneGain, microphoneDevice, microphoneSensitivity, listening, muteHotkey, deafenHotkey, pttHotkey, pttEnabled, muteIndicatorEnabled, muteIndicatorPosition, theme, overlayEnabled, overlayStatus, overlayPort, start_overlay, stop_overlay} from '../settings';
 import HotkeyBinding from '../components/HotkeyBinding.svelte';
 import FFTGraph from '../components/FFTGraph.svelte';
+  import Field from '../components/Field.svelte';
 
   let microphones = [];
   let speakers = [];
@@ -94,6 +95,41 @@ import FFTGraph from '../components/FFTGraph.svelte';
         <Option value="light">Light</Option>
         <Option value="dark">Dark</Option>
       </Select>
+    </div>
+    <h2>Overlay</h2>
+    <div class="option-group">
+      <label for="">Overlay Enabled</label>
+      <input type="checkbox" bind:checked={$overlayEnabled} on:change={(e) => {
+        if ($overlayEnabled) {
+          start_overlay();
+        } else {
+          stop_overlay();
+        }
+      }} disabled={$overlayStatus == "starting" || $overlayStatus == "stopping"}>
+      <label for="">Overlay Port</label>
+      <Field error={null} icon="electrical_services" type="number" bind:value={$overlayPort}>
+        <p class="flex row start">
+          <strong>Required</strong>
+          This is the network port the overlay server will run on. Make sure this port is free.
+          <em>Changes will only take effect after restarting the overlay server.</em>
+        </p>
+      </Field>
+      <label for="">Overlay Status</label>
+      <Field error={null} icon="database" type="text" value={$overlayStatus} disabled>
+        <p class="flex row start">
+          {#if $overlayStatus === "stopped"}
+          The server is currently stopped.
+          {:else if $overlayStatus === "starting"}
+          The server is starting up.
+          {:else if $overlayStatus === "running"}
+          The server is running normally.
+          {:else if $overlayStatus === "stopping"}
+          The server is shutting down
+          {:else}
+          {$overlayStatus}
+          {/if}
+        </p>
+      </Field>
     </div>
   </div>
 </div>

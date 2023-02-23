@@ -67,9 +67,12 @@ export default async function room(user, connection) {
     const localFFTStore = writable(new Uint8Array(FFT_SIZE));
     
     function updateFFT() {
+      let state = [];
       for (const participant of participants) {
-        participant.fft.update(array => (participant.analyserNode.getByteFrequencyData(array), array));
+        participant.fft.update(array => (participant.analyserNode.getByteFrequencyData(array), state.push({name: participant.name, fft: array.slice()}), array));
       }
+
+      overlay.update(state);
 
       localFFTStore.update(array => (localFFT.getByteFrequencyData(array), array));
       

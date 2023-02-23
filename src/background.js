@@ -3,6 +3,7 @@ import {app, BrowserWindow, globalShortcut, ipcMain} from 'electron';
 import path from 'node:path';
 // @ts-ignore
 import RENDERER_FILE_PATH from 'renderer';
+import OverlayServer from './lib/overlay';
 
 
 let currentHotkeys = new Map();
@@ -41,4 +42,18 @@ ipcMain.handle("set-hotkey", async (e, hotkey, accelerator) => {
       e.sender.send('hotkey-pressed', hotkey);
     })
   }
+})
+
+const overlay_server = new OverlayServer();
+
+ipcMain.handle("overlay-enable", async (e, port) => {
+  return await overlay_server.start(port)
+})
+
+ipcMain.handle("overlay-disable", async (e) => {
+  return await overlay_server.stop()
+})
+
+ipcMain.handle("overlay-update", async (e, state) => {
+  overlay_server.send_update(state);
 })
