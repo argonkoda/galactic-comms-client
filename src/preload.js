@@ -15,3 +15,15 @@ contextBridge.exposeInMainWorld('hotkeys', {
   off: keyEmitter.off.bind(keyEmitter),
   once: keyEmitter.once.bind(keyEmitter),
 })
+
+contextBridge.exposeInMainWorld('overlay', {
+  enable: async (port) => {
+    return await ipcRenderer.invoke('overlay-enable', port);
+  },
+  disable: async () => {
+    return await ipcRenderer.invoke('overlay-disable');
+  },
+  update: (state) => {
+    ipcRenderer.invoke('overlay-update', state);
+  }
+})
