@@ -139,6 +139,10 @@ export default async function room(user, connection) {
         inputDeviceStreamNode = new MediaStreamAudioSourceNode(audioCtx, {mediaStream: await navigator.mediaDevices.getUserMedia({ audio: device ? {deviceId: {exact: device}, noiseSuppression: true} : { noiseSuppression: true} })});
         inputDeviceStreamNode.connect(localMixer);
     
+      }),
+
+      settings.outputDevice.subscribe(device => {
+        audioCtx.setSinkId(device || 'default');
       })
     ]
 

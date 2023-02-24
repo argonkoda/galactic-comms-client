@@ -1,13 +1,13 @@
 <script>
   import Select from '../components/Select.svelte';
   import Option from '../components/Option.svelte';
-  import {globalVolume, microphoneGain, microphoneDevice, microphoneSensitivity, listening, muteHotkey, deafenHotkey, pttHotkey, pttEnabled, muteIndicatorEnabled, muteIndicatorPosition, theme, overlayEnabled, overlayStatus, overlayPort, start_overlay, stop_overlay} from '../settings';
+  import {globalVolume, microphoneGain, microphoneDevice, microphoneSensitivity, outputDevice, listening, muteHotkey, deafenHotkey, pttHotkey, pttEnabled, muteIndicatorEnabled, muteIndicatorPosition, theme, overlayEnabled, overlayStatus, overlayPort, start_overlay, stop_overlay} from '../settings';
 import HotkeyBinding from '../components/HotkeyBinding.svelte';
 import FFTGraph from '../components/FFTGraph.svelte';
   import Field from '../components/Field.svelte';
 
   let microphones = [];
-  let speakers = [];
+  let outputs = [];
 
   export let room = null;
   $: localSpeaking = room?.localSpeaking ?? null;
@@ -16,7 +16,7 @@ import FFTGraph from '../components/FFTGraph.svelte';
   function refreshDevices() {
     navigator.mediaDevices.enumerateDevices().then((devices) => {
       microphones = devices.filter(device => device.kind === 'audioinput');
-      speakers = devices.filter(device => device.kind === 'audiooutput');
+      outputs = devices.filter(device => device.kind === 'audiooutput');
     }).catch(console.error);
   }
 
@@ -31,6 +31,18 @@ import FFTGraph from '../components/FFTGraph.svelte';
     <div class="settings-group">
       <label for="">Output Volume</label>
       <input type="range" min="0" max="5" step="0.01" bind:value={$globalVolume}>
+    </div>
+    <div class="settings-group">
+      <label for="">Output Device</label>
+      <div class="flex row">
+        <Select bind:value={$outputDevice}>
+          <Option value={null}>Default Device</Option>
+          {#each outputs as output}
+            <Option value={output.deviceId}>{output.label || "Unknown Device"}</Option>
+          {/each}
+        </Select>
+        <button aria-label="Refresh Device List" class="borderless" on:click={refreshDevices}><span class="material-symbols-outlined">refresh</span></button>
+      </div>
     </div>
     <div class="settings-group">
       <label for="">Input Volume</label>
