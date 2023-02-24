@@ -9,6 +9,8 @@ export const knownServers = persistentSetting('knownServers', "{}", true);
 // Output
 export const globalVolume = persistentSetting('globalVolume', 1);
 export const deafenHotkey = persistentSetting('deafenHotkey', "");
+export const outputDevice = persistentSetting('outputDevice', null, true);
+
 
 // Input
 export const microphoneDevice = persistentSetting('microphoneDevice', null, true);

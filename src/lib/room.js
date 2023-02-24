@@ -136,9 +136,13 @@ export default async function room(user, connection) {
         if (inputDeviceStreamNode) {
           inputDeviceStreamNode?.disconnect();
         }
-        inputDeviceStreamNode = new MediaStreamAudioSourceNode(audioCtx, {mediaStream: await navigator.mediaDevices.getUserMedia({ audio: device ? {deviceId: {exact: device}} : true })});
+        inputDeviceStreamNode = new MediaStreamAudioSourceNode(audioCtx, {mediaStream: await navigator.mediaDevices.getUserMedia({ audio: device ? {deviceId: {exact: device}, noiseSuppression: true} : { noiseSuppression: true} })});
         inputDeviceStreamNode.connect(localMixer);
     
+      }),
+
+      settings.outputDevice.subscribe(device => {
+        audioCtx.setSinkId(device || 'default');
       })
     ]
 
