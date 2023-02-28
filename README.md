@@ -6,23 +6,23 @@ Its role is to allow users to connect to the voice network and provide an interf
 This is one of three parts that make up the system and should be installed on the **client side**.
 
 The other parts can be found here:
-- [The Torch Plugin](https://github.com/Someoneamzing/galactic-comms-plugin)
-- [The Voice Server](https://github.com/Someoneamzing/galactic-comms-server)
-- [The Voice Client (This Repo)](https://github.com/Someoneamzing/galactic-comms-client)
+- [The Torch Plugin](https://github.com/argonkoda/galactic-comms-plugin)
+- [The Voice Server](https://github.com/argonkoda/galactic-comms-server)
+- [The Voice Client (This Repo)](https://github.com/argonkoda/galactic-comms-client)
 
 ## Installation
 For most users you'll just want to install the program. To do that just follow the steps below. For those who are interested in helping or have a bug to report check out [CONTRIBUTING.md]('./CONTRIBUTING.md).
 
 > Note: This system is only available for Windows PC at the moment. This is mostly because Space Engineers is also Windows only. If someone wants to configure MacOS or Linux builds for the server or client, open an issue in the relevant repo. Unfortunately XBox support is unlikely due to the nature of modding and the permissions required for microphone access etc. 
 
-1. To start you'll want to grab the latest release from the [Releases Page](https://github.com/Someoneamzing/galactic-comms-client/releases). To do that find the latest release and download the `GalacticComms Voice Client.zip` file.
+1. To start you'll want to grab the latest release from the [Releases Page](https://github.com/argonkoda/galactic-comms-client/releases). To do that find the latest release and download the `GalacticComms Voice Client.zip` file.
 2. Extract the contents into a folder where you want to store the program.
 3. You can open the program by running `GalacticComms Voice Client.exe`.
 
 > Note: You can create a shortcut easily by right clicking on the exe and selecting one of 'Pin to Start', 'Pin to Taskbar' or 'Send To > Desktop (Shortcut)'.
 
 ## Setup
-Once the client is installed you can begin connecting. Before you begin make sure you have a dedicated server to join with the plugin installed and a voice server to connect to. Instructions for that can be found in the [Plugin Repo](https://github.com/Someoneamzing/galactic-comms-plugin) and [Server Repo](https://github.com/Someoneamzing/galactic-comms-server).
+Once the client is installed you can begin connecting. Before you begin make sure you have a dedicated server to join with the plugin installed and a voice server to connect to. Instructions for that can be found in the [Plugin Repo](https://github.com/argonkoda/galactic-comms-plugin) and [Server Repo](https://github.com/argonkoda/galactic-comms-server).
 
 Open the client by running `GalacticComms Voice Client.exe` or through the shortcut you created if you did that. You should see a screen like the one below: 
 
